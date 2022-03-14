@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    build: .
+    image: small_world
+    ports:
+      - 4000:4000
+    command: mix phx.server
+    environment:
+      - MIX_ENV=dev
+      - TZ="Asia/Tokyo"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/small_world
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=db
+      - TZ="Asia/Tokyo"
+    volumes:
+      - ./tmp/data:/var/lib/postgresql/data
+    restart: always
